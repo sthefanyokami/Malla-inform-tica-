@@ -19,8 +19,8 @@
         */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f8ff; /* Azul cielo muy claro */
-            color: #191970; /* Azul medianoche */
+            background-color: #f0f8ff;
+            color: #191970;
             margin: 0;
             padding: 20px;
         }
@@ -31,13 +31,13 @@
         }
 
         .header h1 {
-            color: #00008b; /* Azul oscuro */
+            color: #00008b;
             font-size: 2.5em;
             margin: 0;
         }
 
         .header p {
-            color: #4169e1; /* Azul real */
+            color: #4169e1;
             font-style: italic;
         }
 
@@ -48,7 +48,7 @@
         }
 
         .semester {
-            background-color: #ffffff; /* Blanco puro para el contenedor */
+            background-color: #ffffff;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             padding: 25px;
@@ -61,11 +61,11 @@
         }
 
         .semester h2 {
-            color: #191970; /* Azul medianoche */
+            color: #191970;
             margin-top: 0;
             margin-bottom: 20px;
             text-align: center;
-            border-bottom: 2px solid #e6f0ff; /* Azul muy claro */
+            border-bottom: 2px solid #e6f0ff;
             padding-bottom: 10px;
         }
 
@@ -81,33 +81,30 @@
             position: relative;
         }
         
-        /* Estado por defecto para materias activas (no bloqueadas ni completadas) */
         .course:not(.locked):not(.completed) {
-            background-color: #b0c4de; /* Azul grisáceo claro */
-            color: #191970; /* Texto azul oscuro */
+            background-color: #b0c4de;
+            color: #191970;
         }
         
         .course:not(.locked):hover {
-            background-color: #add8e6; /* Azul claro al pasar el cursor */
+            background-color: #add8e6;
         }
 
-        /* Materias completadas */
         .course.completed {
-            background-color: #87cefa; /* Azul claro para completadas */
+            background-color: #87cefa;
             color: #00008b;
             box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
         }
 
         .course.completed .course-name {
             text-decoration: line-through;
-            color: #4682b4; /* Texto azul acero para completadas */
+            color: #4682b4;
         }
 
-        /* Materias bloqueadas */
         .course.locked {
             cursor: not-allowed;
-            background-color: #e6f0ff; /* Azul muy claro para bloqueadas */
-            color: #6495ed; /* Azul medio para texto más tenue */
+            background-color: #e6f0ff;
+            color: #6495ed;
         }
 
         .course-details {
@@ -118,23 +115,18 @@
         .course-name {
             font-weight: bold;
             font-size: 1em;
-            color: inherit; /* Hereda el color del contenedor */
+            color: inherit;
         }
 
         .course-uc {
             font-size: 0.85em;
-            color: inherit; /* Hereda el color del contenedor */
+            color: inherit;
             margin-top: 4px;
-        }
-
-        .uc-count {
-            font-weight: bold;
-            color: #00008b; /* Azul oscuro para el contador */
         }
 
         .tooltip {
             visibility: hidden;
-            background-color: #2f4f4f; /* Gris oscuro para el tooltip */
+            background-color: #2f4f4f;
             color: #fff;
             text-align: center;
             padding: 8px;
@@ -168,7 +160,7 @@
 
         .progress-bar {
             width: 100%;
-            background-color: #add8e6; /* Fondo de barra en azul claro */
+            background-color: #add8e6;
             border-radius: 5px;
             height: 20px;
             margin-top: 20px;
@@ -177,12 +169,12 @@
 
         .progress {
             height: 100%;
-            background-color: #4682b4; /* Color de progreso en azul acero */
+            background-color: #4682b4;
             width: 0%;
             transition: width 0.5s ease-in-out;
             text-align: center;
             line-height: 20px;
-            color: #191970; /* Texto azul oscuro en la barra de progreso */
+            color: #191970;
             font-weight: bold;
         }
         
@@ -191,7 +183,7 @@
             margin: 10px 0;
             font-size: 1.1em;
             font-weight: bold;
-            color: #00008b; /* Contador de UC en azul oscuro */
+            color: #00008b;
         }
     </style>
 </head>
@@ -244,7 +236,7 @@
                 courses: [
                     { name: "Cálculo Integral", uc: 5, req: ["Cálculo Diferencial"] },
                     { name: "Mecanica", uc: 6, req: ["Cálculo Diferencial"] },
-                    { name: "Algoritmos y estructuras de datos", uc: 7, Req: ["Algoritmos y Programación"] },
+                    { name: "Algoritmos y estructuras de datos", uc: 7, req: ["Algoritmos y Programación"] },
                     { name: "Contabilidad Financiera", uc: 5, reqUC: 40 },
                     { name: "Organización del computador", uc: 5, req: ["Matemáticas Discretas"] },
                     { name: "Sistemas de Información", uc: 4, req: ["Estrategia y Proyeccion Profesional"] }
@@ -257,7 +249,7 @@
                     { name: "Ecología, ambiente y sustentabilidad", uc: 3, reqUC: 72 },
                     { name: "Cálculo Vectorial", uc: 6, req: ["Cálculo Integral", "Álgebra Lineal"] },
                     { name: "Ingeniería Económica", uc: 4, req: ["Contabilidad Financiera"] },
-                    { name: "Ingeniería de software", uc: 5, req: ["Sistemas de Información"], coReq: ["Programación Orientada a Objetos"] },
+                    { name: "Ingeniería de software", uc: 5, req: ["Sistemas de Información", "Programación Orientada a Objetos"] },
                     { name: "Probabilidad y Estadistica", uc: 5, req: ["Cálculo Integral"] },
                     { name: "Programación Orientada a Objetos", uc: 5, req: ["Algoritmos y estructuras de datos"] },
                     { name: "Sistemas Operativos", uc: 5, req: ["Organización del computador"] }
@@ -288,7 +280,7 @@
                     { name: "Ciberseguridad Ofensiva", uc: 5, req: ["Redes de Comunicacion de Datos"] },
                     { name: "Ingeniería de Requisitos", uc: 4, req: ["Gestión de Proyectos de Software", "Sistemas de Bases de Datos"] },
                     { name: "Innovación y Emprendimiento", uc: 3, reqUC: 138 },
-                    { name: "Inteligencia de Negocios", uc: 3, coReq: ["Tópicos Especiales para la Gestión de Datos"] },
+                    { name: "Inteligencia de Negocios", uc: 3, req: ["Tópicos Especiales para la Gestión de Datos"] },
                     { name: "Tópicos Especiales para la Gestión de Datos", uc: 4, req: ["Sistemas de Bases de Datos"] },
                     { name: "Curso de Trabajo de Grado", uc: 0, reqUC: 151 }
                 ]
@@ -300,7 +292,7 @@
                     { name: "Investigación de Operaciones", uc: 5, req: ["Métodos Numéricos", "Probabilidad y Estadistica"] },
                     { name: "Inteligencia Artificial: Aprendizaje Automático", uc: 4, reqUC: 167 },
                     { name: "Ciberseguridad Defensiva", uc: 5, req: ["Ciberseguridad Ofensiva"] },
-                    { name: "Computación en la Nube", uc: 5, coReq: ["Ciberseguridad Defensiva"] },
+                    { name: "Computación en la Nube", uc: 5, req: ["Ciberseguridad Defensiva"] },
                     { name: "Desarrollo de Software", uc: 5, req: ["Aseguramiento de la calidad del software", "Ingeniería de Requisitos", "Tópicos Especiales de Programación"] },
                     { name: "Electiva (Informatica)", uc: 3, reqUC: 172 },
                     { name: "Electiva Complementaria", uc: 3, reqUC: 138 },
@@ -328,7 +320,7 @@
 
         function loadProgress() {
             try {
-                const storedProgress = localStorage.getItem('curriculumProgress241'); // Cambiado para evitar choques con el almacenamiento viejo
+                const storedProgress = localStorage.getItem('curriculumProgress241');
                 if (storedProgress) {
                     completedCourses = JSON.parse(storedProgress);
                 }
@@ -390,15 +382,6 @@
                     if (!completedCourses[req]) {
                         isLocked = true;
                         reasons.push(`- Falta aprobar: ${req}`);
-                    }
-                }
-            }
-
-            // Check corequisites
-            if (course.coReq) {
-                for (const coReq of course.coReq) {
-                    if (!completedCourses[coReq]) {
-                        reasons.push(`- Requisito simultáneo (CoReq): ${coReq}`);
                     }
                 }
             }
@@ -474,9 +457,6 @@
                         completedCourses[courseName] = !completedCourses[courseName];
                         saveProgress();
                         renderCurriculum();
-                    } else {
-                        // Opcional: Feedback visual o sonoro para el usuario
-                        console.log(`Materia ${courseName} bloqueada. Requisitos no cumplidos.`);
                     }
                 });
             });
