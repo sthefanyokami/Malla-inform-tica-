@@ -5,18 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Malla Curricular - Ingeniería Informática</title>
     <style>
-        /* Paleta de colores azules:
-           Fondo: #f0f8ff (Azul cielo muy claro)
-           Texto general: #191970 (Azul medianoche)
-           Títulos: #00008b (Azul oscuro)
-           Contenedores: #ffffff (Blanco puro)
-           Cursos inactivos/bloqueados: #e6f0ff (Azul muy claro)
-           Cursos activos (no completados): #b0c4de (Azul grisáceo claro)
-           Cursos completados: #87cefa (Azul claro)
-           Barra de progreso: #4682b4 (Azul acero)
-           Bordes y detalles: #add8e6 (Azul claro)
-           Tooltip: #2f4f4f (Gris oscuro)
-        */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f0f8ff;
@@ -319,22 +307,15 @@
         const progressIndicator = document.getElementById('progress-indicator');
 
         function loadProgress() {
-            try {
-                const storedProgress = localStorage.getItem('curriculumProgress241');
-                if (storedProgress) {
-                    completedCourses = JSON.parse(storedProgress);
-                }
-            } catch (e) {
-                console.error("No se pudo cargar el progreso de localStorage", e);
+            const storedProgress = localStorage.getItem('curriculumProgress241');
+            if (storedProgress) {
+                completedCourses = JSON.parse(storedProgress);
+                validateState(); // Limpia datos corruptos en la carga inicial
             }
         }
 
         function saveProgress() {
-            try {
-                localStorage.setItem('curriculumProgress241', JSON.stringify(completedCourses));
-            } catch (e) {
-                console.error("No se pudo guardar el progreso en localStorage", e);
-            }
+            localStorage.setItem('curriculumProgress241', JSON.stringify(completedCourses));
         }
 
         function calculateUC() {
@@ -353,30 +334,18 @@
         function findCourseByName(name) {
             for (const semester of curriculum) {
                 const course = semester.courses.find(c => c.name === name);
-                if (course) {
-                    return course;
-                }
+                if (course) return course;
             }
             return null;
         }
 
-        function updateProgress() {
-            const ucCompleted = calculateUC();
-            const progress = (ucCompleted / totalUC) * 100;
-            
-            ucCounter.textContent = ucCompleted;
-            progressIndicator.style.width = `${progress}%`;
-            progressIndicator.textContent = `${Math.round(progress)}%`;
-        }
-        
+        // Esta función evalúa las condiciones estrictas de una materia
         function checkCourseStatus(course) {
-            const isCompleted = completedCourses[course.name];
-            const ucCompleted = calculateUC();
-            
+            const isCompleted = !!completedCourses[course.name];
             let isLocked = false;
             let reasons = [];
 
-            // Check prerequisites
+            // Validación de pre-requisitos
             if (course.req) {
                 for (const req of course.req) {
                     if (!completedCourses[req]) {
@@ -386,15 +355,54 @@
                 }
             }
 
-            // Check UC prerequisites
+            // Validación de UC requiridas
             if (course.reqUC) {
-                if (ucCompleted < course.reqUC) {
+                let validUC = 0;
+                // Calculamos las UC tomando en cuenta solo OTRAS materias. 
+                // Esto evita que una materia use su propio peso para validarse.
+                for (const cName in completedCourses) {
+                    if (completedCourses[cName] && cName !== course.name) {
+                        const c = findCourseByName(cName);
+                        if (c) validUC += c.uc;
+                    }
+                }
+                
+                if (validUC < course.reqUC) {
                     isLocked = true;
-                    reasons.push(`- Necesitas ${course.reqUC} UC acumuladas. Te faltan ${course.reqUC - ucCompleted} UC.`);
+                    reasons.push(`- Necesitas ${course.reqUC} UC acumuladas. Tienes ${validUC} UC válidas para esta materia.`);
                 }
             }
             
             return { isCompleted, isLocked, reasons };
+        }
+
+        // Efecto cascada: desmarca materias que ya no cumplen con los requisitos
+        function validateState() {
+            let changed = true;
+            while (changed) {
+                changed = false;
+                curriculum.forEach(semester => {
+                    semester.courses.forEach(course => {
+                        if (completedCourses[course.name]) {
+                            const status = checkCourseStatus(course);
+                            if (status.isLocked) {
+                                // Si está completada pero ahora está bloqueada lógicamente, se desmarca
+                                completedCourses[course.name] = false;
+                                changed = true; // Reinicia el ciclo para atrapar materias dependientes de esta
+                            }
+                        }
+                    });
+                });
+            }
+        }
+
+        function updateProgress() {
+            const ucCompleted = calculateUC();
+            const progress = (ucCompleted / totalUC) * 100;
+            
+            ucCounter.textContent = ucCompleted;
+            progressIndicator.style.width = `${progress}%`;
+            progressIndicator.textContent = `${Math.round(progress)}%`;
         }
 
         function renderCurriculum() {
@@ -408,25 +416,25 @@
                 semesterDiv.appendChild(semesterTitle);
 
                 semester.courses.forEach(course => {
-                    const courseDiv = document.createElement('div');
                     const status = checkCourseStatus(course);
                     
+                    const courseDiv = document.createElement('div');
                     courseDiv.className = `course ${status.isCompleted ? 'completed' : ''} ${status.isLocked ? 'locked' : ''}`;
                     courseDiv.dataset.courseName = course.name;
 
                     const courseDetails = document.createElement('div');
                     courseDetails.className = 'course-details';
                     
-                    const courseName = document.createElement('span');
-                    courseName.className = 'course-name';
-                    courseName.textContent = course.name;
+                    const nameSpan = document.createElement('span');
+                    nameSpan.className = 'course-name';
+                    nameSpan.textContent = course.name;
                     
-                    const courseUC = document.createElement('span');
-                    courseUC.className = 'course-uc';
-                    courseUC.textContent = `UC: ${course.uc}`;
+                    const ucSpan = document.createElement('span');
+                    ucSpan.className = 'course-uc';
+                    ucSpan.textContent = `UC: ${course.uc}`;
 
-                    courseDetails.appendChild(courseName);
-                    courseDetails.appendChild(courseUC);
+                    courseDetails.appendChild(nameSpan);
+                    courseDetails.appendChild(ucSpan);
                     courseDiv.appendChild(courseDetails);
 
                     if (status.isLocked) {
@@ -453,16 +461,24 @@
                     
                     const status = checkCourseStatus(course);
 
-                    if (!status.isLocked) {
-                        completedCourses[courseName] = !completedCourses[courseName];
-                        saveProgress();
-                        renderCurriculum();
+                    if (status.isCompleted) {
+                        // Siempre podemos desmarcar una materia ya completada
+                        completedCourses[courseName] = false;
+                    } else if (!status.isLocked) {
+                        // Solo podemos marcarla si cumple los requisitos limpios
+                        completedCourses[courseName] = true;
+                    } else {
+                        // Si está bloqueada y no completada, ignoramos el click
+                        return;
                     }
+
+                    validateState(); // Propaga el cambio a todo el árbol
+                    saveProgress();
+                    renderCurriculum();
                 });
             });
         }
 
-        // Initialize on page load
         loadProgress();
         renderCurriculum();
     </script>
