@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Malla Curricular - Ingeniería Indormática</title>
+    <title>Malla Curricular - Ingeniería de Sistemas</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -107,11 +107,6 @@
             margin-top: 4px;
         }
 
-        .uc-count {
-            font-weight: bold;
-            color: #2980b9;
-        }
-
         .tooltip {
             visibility: hidden;
             background-color: #555;
@@ -121,13 +116,14 @@
             border-radius: 6px;
             position: absolute;
             z-index: 1;
-            bottom: 125%; /* Posiciona el tooltip arriba del elemento */
+            bottom: 125%;
             left: 50%;
             transform: translateX(-50%);
             opacity: 0;
             transition: opacity 0.3s;
             width: max-content;
             max-width: 250px;
+            white-space: pre-line;
         }
 
         .course.locked:hover .tooltip {
@@ -178,11 +174,11 @@
 
     <div class="header">
         <h1>Malla Curricular Interactiva</h1>
-        <p>Ingeniería Informática</p>
+        <p>Ingeniería de Sistemas</p>
     </div>
 
     <div class="uc-tracker">
-        Unidades de Crédito Acumuladas: <span id="uc-counter">0</span> / 265
+        Unidades de Crédito Acumuladas: <span id="uc-counter">0</span> / 231
     </div>
 
     <div class="progress-bar">
@@ -198,9 +194,9 @@
                 totalUC: 25,
                 courses: [
                     { name: "Álgebra y Trigonometría", uc: 5 },
-                    { name: "Principios de Marketing", uc: 5 },
+                    { name: "Estrategia y Proyeccion Profesional", uc: 5 },
                     { name: "Lógica", uc: 4 },
-                    { name: "Fundamentos de Programación", uc: 3 },
+                    { name: "Ingles", uc: 3 },
                     { name: "Competencia Textual en español", uc: 5 },
                     { name: "Identidad, Liderazgo y compromiso I", uc: 3 }
                 ]
@@ -210,100 +206,96 @@
                 totalUC: 31,
                 courses: [
                     { name: "Cálculo Diferencial", uc: 6, req: ["Álgebra y Trigonometría"] },
-                    { name: "Álgebra Lineal", uc: 6, req: ["Álgebra y Trigonometría"] },
+                    { name: "Álgebra Lineal", uc: 5, req: ["Álgebra y Trigonometría"] },
                     { name: "Matemáticas Discretas", uc: 6, req: ["Lógica"] },
-                    { name: "Algoritmos y Programación", uc: 3, req: ["Fundamentos de Programación"] },
-                    { name: "Algoritmos y estructuras de datos", uc: 7, req: ["Algoritmos y Programación"] },
+                    { name: "Ingles Tecnico", uc: 4, req: ["Ingles"] },
+                    { name: "Algoritmos y Programación", uc: 7, req: ["Lógica"] },
                     { name: "Identidad, Liderazgo y compromiso II", uc: 3, req: ["Identidad, Liderazgo y compromiso I"] }
                 ]
             },
             {
                 name: "Semestre 3",
-                totalUC: 33,
+                totalUC: 32,
                 courses: [
                     { name: "Cálculo Integral", uc: 5, req: ["Cálculo Diferencial"] },
-                    { name: "Física General", uc: 6, req: ["Cálculo Diferencial"] },
-                    { name: "Contabilidad Financiera", uc: 5, reqUC: 56 },
-                    { name: "Ecología, ambiente y sustentabilidad", uc: 3, reqUC: 44 },
-                    { name: "Programación Orientada a Objetos", uc: 7, req: ["Algoritmos y Programación", "Algoritmos y estructuras de datos"] },
-                    { name: "Sistemas de Información", uc: 4, reqUC: 56 },
-                    { name: "Innovación y Emprendimiento", uc: 3, reqUC: 56 }
+                    { name: "Mecanica", uc: 6, req: ["Cálculo Diferencial"] },
+                    { name: "Algoritmos y estructuras de datos", uc: 7, coReq: ["Algoritmos y Programación"] },
+                    { name: "Contabilidad Financiera", uc: 5, reqUC: 40 },
+                    { name: "Organización del computador", uc: 5, req: ["Matemáticas Discretas"] },
+                    { name: "Sistemas de Información", uc: 4, req: ["Estrategia y Proyeccion Profesional"] }
                 ]
             },
             {
                 name: "Semestre 4",
-                totalUC: 31,
+                totalUC: 33,
                 courses: [
-                    { name: "Cálculo Vectorial", uc: 5, req: ["Cálculo Integral"] },
-                    { name: "Ecuaciones Diferenciales Ordinarias", uc: 4, req: ["Cálculo Integral"] },
+                    { name: "Ecología, ambiente y sustentabilidad", uc: 3, reqUC: 72 },
+                    { name: "Cálculo Vectorial", uc: 6, req: ["Cálculo Integral", "Álgebra Lineal"] },
                     { name: "Ingeniería Económica", uc: 4, req: ["Contabilidad Financiera"] },
-                    { name: "Organización del Computador", uc: 5, req: ["Matemáticas Discretas"] },
-                    { name: "Programación orientada a la web", uc: 3, req: ["Programación Orientada a Objetos"] },
-                    { name: "Ingeniería de software", uc: 5, req: ["Sistemas de Información"] },
-                    { name: "Interacción humano computador", uc: 5, req: ["Ingeniería de software"] }
+                    { name: "Ingeniería de software", uc: 5, req: ["Sistemas de Información"], coReq: ["Programación Orientada a Objetos"] },
+                    { name: "Probabilidad y Estadistica", uc: 5, req: ["Cálculo Integral"] },
+                    { name: "Programación Orientada a Objetos", uc: 5, req: ["Algoritmos y estructuras de datos"] },
+                    { name: "Sistemas Operativos", uc: 5, req: ["Organización del computador"] }
                 ]
             },
             {
                 name: "Semestre 5",
-                totalUC: 31,
+                totalUC: 33,
                 courses: [
-                    { name: "Probabilidad y estadística", uc: 5, req: ["Cálculo Integral"] },
-                    { name: "Electricidad y magnetismo", uc: 6, req: ["Física General"] },
-                    { name: "Laboratorio de física", uc: 2, req: ["Electricidad y magnetismo"] },
-                    { name: "Sistemas operativos", uc: 5, req: ["Organización del Computador"] },
-                    { name: "Tópicos Especiales de Programación", uc: 3, req: ["Programación Orientada a Objetos"] },
-                    { name: "Gestión de Proyectos de Software", uc: 4, req: ["Ingeniería Económica"] },
-                    { name: "Sistemas de Bases de Datos", uc: 6, reqUC: 107 },
-                    { name: "Curso de servicio Comunitario", uc: 0, reqUC: 120 }
+                    { name: "Diseño de Experiencia de Usuario", uc: 4 },
+                    { name: "Ecuaciones Diferenciales Ordinarias", uc: 4, req: ["Cálculo Integral"] },
+                    { name: "Electricidad y magnetismo", uc: 6, req: ["Mecanica"] },
+                    { name: "Tópicos Especiales de Programación", uc: 4, req: ["Programación Orientada a Objetos"] },
+                    { name: "Gestión de Proyectos de Software", uc: 4, req: ["Ingeniería Económica", "Ingeniería de software"] },
+                    { name: "Redes de Comunicacion de Datos", uc: 6, req: ["Sistemas Operativos"] },
+                    { name: "Sistemas de Bases de Datos", uc: 5, reqUC: 105 },
+                    { name: "Curso de servicio Comunitario", uc: 0, reqUC: 105 },
+                    { name: "Servicio Comunitario", uc: 0, req: ["Curso de servicio Comunitario"] }
                 ]
             },
             {
                 name: "Semestre 6",
-                totalUC: 31,
+                totalUC: 30,
                 courses: [
                     { name: "Métodos Numéricos", uc: 2, req: ["Cálculo Vectorial"] },
-                    { name: "Arquitectura del Computador Aplicada", uc: 7, req: ["Electricidad y magnetismo"] },
-                    { name: "Inglés I", uc: 4, reqUC: 25 },
-                    { name: "Redes de Comunicación de datos", uc: 6, req: ["Sistemas operativos"] },
+                    { name: "Arquitectura del Computador Aplicada", uc: 5, req: ["Electricidad y magnetismo"] },
                     { name: "Aseguramiento de la calidad del software", uc: 4, req: ["Gestión de Proyectos de Software"] },
+                    { name: "Ciberseguridad Ofensiva", uc: 5, req: ["Redes de Comunicacion de Datos"] },
                     { name: "Ingeniería de Requisitos", uc: 4, req: ["Gestión de Proyectos de Software", "Sistemas de Bases de Datos"] },
+                    { name: "Innovación y Emprendimiento", uc: 3, reqUC: 138 },
+                    { name: "Inteligencia de Negocios", uc: 3, coReq: ["Tópicos Especiales para la Gestión de Datos"] },
                     { name: "Tópicos Especiales para la Gestión de Datos", uc: 4, req: ["Sistemas de Bases de Datos"] },
-                    { name: "Servicio Comunitario", uc: 0, req: ["Curso de Servicio Comunitario"] }
+                    { name: "Curso de Trabajo de Grado", uc: 0, reqUC: 151 }
                 ]
             },
             {
                 name: "Semestre 7",
-                totalUC: 30,
+                totalUC: 34,
                 courses: [
-                    { name: "Investigación de Operaciones", uc: 5, req: ["Métodos Numéricos", "Probabilidad y estadística"] },
+                    { name: "Investigación de Operaciones", uc: 5, req: ["Métodos Numéricos", "Probabilidad y Estadistica"] },
                     { name: "Inteligencia Artificial: Aprendizaje Automático", uc: 4, reqUC: 167 },
-                    { name: "Inglés II", uc: 4, req: ["Inglés I"] },
-                    { name: "Ciberseguridad", uc: 5, req: ["Redes de Comunicación de datos"] },
-                    { name: "Inteligencia de Negocios", uc: 3, reqUC: 167 },
-                    { name: "Desarrollo de Software", uc: 5, req: ["Aseguramiento de la calidad del software", "Ingeniería de Requisitos"] },
-                    { name: "Electiva de informática I", uc: 4, req: ["Desarrollo de Software"], reqUC: 180 },
-                    { name: "Pasantía", uc: 4, req: ["Desarrollo de Software"] }
+                    { name: "Ciberseguridad Defensiva", uc: 5, req: ["Ciberseguridad Ofensiva"] },
+                    { name: "Computación en la Nube", uc: 5, coReq: ["Ciberseguridad Defensiva"] },
+                    { name: "Desarrollo de Software", uc: 5, req: ["Aseguramiento de la calidad del software", "Ingeniería de Requisitos", "Tópicos Especiales de Programación"] },
+                    { name: "Electiva (Informatica)", uc: 3, reqUC: 172 },
+                    { name: "Electiva Complementaria", uc: 3, reqUC: 138 },
+                    { name: "Pasantía", uc: 4, req: ["Ingeniería de Requisitos"] }
                 ]
             },
             {
                 name: "Semestre 8",
-                totalUC: 28,
+                totalUC: 23,
                 courses: [
                     { name: "Evaluación de Sistemas Informáticos", uc: 4, req: ["Investigación de Operaciones"] },
-                    { name: "Ética Profesional", uc: 3, reqUC: 180 },
-                    { name: "Inglés Técnico", uc: 4, req: ["Inglés II"] },
-                    { name: "Computación en la nube", uc: 5, req: ["Ciberseguridad"] },
-                    { name: "Arquitecturas Empresariales", uc: 4, reqUC: 197 },
-                    { name: "Electiva Complementaria", uc: 4, req: ["Desarrollo de Software"], reqUC: 180 },
-                    { name: "Electiva Informática II", uc: 4, req: ["Desarrollo de Software"], reqUC: 180 },
-                    { name: "Curso de Trabajo de Grado", uc: 0, req: ["Desarrollo de Software"] },
-                    { name: "Trabajo de Grado", uc: 21, req: ["Curso de Trabajo de Grado"] }
+                    { name: "Ética Profesional", uc: 3, reqUC: 207 },
+                    { name: "Arquitecturas Empresariales", uc: 4, reqUC: 207 },
+                    { name: "Trabajo de Grado", uc: 12, req: ["Curso de Trabajo de Grado"] }
                 ]
             }
         ];
 
         let completedCourses = {};
-        const totalUC = 222;
+        const totalUC = 231;
 
         const curriculumGrid = document.getElementById('curriculum-grid');
         const ucCounter = document.getElementById('uc-counter');
@@ -311,7 +303,7 @@
 
         function loadProgress() {
             try {
-                const storedProgress = localStorage.getItem('curriculumProgress');
+                const storedProgress = localStorage.getItem('curriculumProgressV2');
                 if (storedProgress) {
                     completedCourses = JSON.parse(storedProgress);
                 }
@@ -322,7 +314,7 @@
 
         function saveProgress() {
             try {
-                localStorage.setItem('curriculumProgress', JSON.stringify(completedCourses));
+                localStorage.setItem('curriculumProgressV2', JSON.stringify(completedCourses));
             } catch (e) {
                 console.error("No se pudo guardar el progreso en localStorage", e);
             }
@@ -367,7 +359,6 @@
             let isLocked = false;
             let reasons = [];
 
-            // Check prerequisites
             if (course.req) {
                 for (const req of course.req) {
                     if (!completedCourses[req]) {
@@ -377,16 +368,15 @@
                 }
             }
 
-            // Check corequisites
             if (course.coReq) {
                 for (const coReq of course.coReq) {
                     if (!completedCourses[coReq]) {
-                        reasons.push(`- Requisito simultáneo (CoReq): ${coReq}`);
+                        isLocked = true; // Los co-requisitos también bloquean si no están aprobados o cursandose simultáneamente
+                        reasons.push(`- Co-requisito necesario: ${coReq}`);
                     }
                 }
             }
 
-            // Check UC prerequisites
             if (course.reqUC) {
                 if (ucCompleted < course.reqUC) {
                     isLocked = true;
@@ -432,7 +422,7 @@
                     if (status.isLocked) {
                         const tooltip = document.createElement('span');
                         tooltip.className = 'tooltip';
-                        tooltip.textContent = `Bloqueado. Requisitos:\n${status.reasons.join('\n')}`;
+                        tooltip.textContent = `Bloqueado:\n${status.reasons.join('\n')}`;
                         courseDiv.appendChild(tooltip);
                     }
 
@@ -457,15 +447,11 @@
                         completedCourses[courseName] = !completedCourses[courseName];
                         saveProgress();
                         renderCurriculum();
-                    } else {
-                        // Opcional: Feedback visual o sonoro para el usuario
-                        console.log(`Materia ${courseName} bloqueada. Requisitos no cumplidos.`);
                     }
                 });
             });
         }
 
-        // Initialize on page load
         loadProgress();
         renderCurriculum();
     </script>
