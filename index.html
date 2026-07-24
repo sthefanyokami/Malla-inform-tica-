@@ -310,7 +310,7 @@
             const storedProgress = localStorage.getItem('curriculumProgress241');
             if (storedProgress) {
                 completedCourses = JSON.parse(storedProgress);
-                validateState(); // Limpia datos corruptos en la carga inicial
+                validateState();
             }
         }
 
@@ -339,13 +339,11 @@
             return null;
         }
 
-        // Esta función evalúa las condiciones estrictas de una materia
         function checkCourseStatus(course) {
             const isCompleted = !!completedCourses[course.name];
             let isLocked = false;
             let reasons = [];
 
-            // Validación de pre-requisitos
             if (course.req) {
                 for (const req of course.req) {
                     if (!completedCourses[req]) {
@@ -355,11 +353,8 @@
                 }
             }
 
-            // Validación de UC requiridas
             if (course.reqUC) {
                 let validUC = 0;
-                // Calculamos las UC tomando en cuenta solo OTRAS materias. 
-                // Esto evita que una materia use su propio peso para validarse.
                 for (const cName in completedCourses) {
                     if (completedCourses[cName] && cName !== course.name) {
                         const c = findCourseByName(cName);
@@ -369,14 +364,14 @@
                 
                 if (validUC < course.reqUC) {
                     isLocked = true;
-                    reasons.push(`- Necesitas ${course.reqUC} UC acumuladas. Tienes ${validUC} UC válidas para esta materia.`);
+                    const faltantes = course.reqUC - validUC;
+                    reasons.push(`- Faltan ${faltantes} UC (Tienes ${validUC}/${course.reqUC})`);
                 }
             }
             
             return { isCompleted, isLocked, reasons };
         }
 
-        // Efecto cascada: desmarca materias que ya no cumplen con los requisitos
         function validateState() {
             let changed = true;
             while (changed) {
@@ -386,9 +381,8 @@
                         if (completedCourses[course.name]) {
                             const status = checkCourseStatus(course);
                             if (status.isLocked) {
-                                // Si está completada pero ahora está bloqueada lógicamente, se desmarca
                                 completedCourses[course.name] = false;
-                                changed = true; // Reinicia el ciclo para atrapar materias dependientes de esta
+                                changed = true;
                             }
                         }
                     });
@@ -462,17 +456,14 @@
                     const status = checkCourseStatus(course);
 
                     if (status.isCompleted) {
-                        // Siempre podemos desmarcar una materia ya completada
                         completedCourses[courseName] = false;
                     } else if (!status.isLocked) {
-                        // Solo podemos marcarla si cumple los requisitos limpios
                         completedCourses[courseName] = true;
                     } else {
-                        // Si está bloqueada y no completada, ignoramos el click
                         return;
                     }
 
-                    validateState(); // Propaga el cambio a todo el árbol
+                    validateState();
                     saveProgress();
                     renderCurriculum();
                 });
