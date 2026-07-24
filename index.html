@@ -3,12 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Malla Curricular - Ingeniería de Sistemas</title>
+    <title>Malla Curricular - Ingeniería Informática</title>
     <style>
+        /* Paleta de colores azules:
+           Fondo: #f0f8ff (Azul cielo muy claro)
+           Texto general: #191970 (Azul medianoche)
+           Títulos: #00008b (Azul oscuro)
+           Contenedores: #ffffff (Blanco puro)
+           Cursos inactivos/bloqueados: #e6f0ff (Azul muy claro)
+           Cursos activos (no completados): #b0c4de (Azul grisáceo claro)
+           Cursos completados: #87cefa (Azul claro)
+           Barra de progreso: #4682b4 (Azul acero)
+           Bordes y detalles: #add8e6 (Azul claro)
+           Tooltip: #2f4f4f (Gris oscuro)
+        */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f4f8;
-            color: #333;
+            background-color: #f0f8ff; /* Azul cielo muy claro */
+            color: #191970; /* Azul medianoche */
             margin: 0;
             padding: 20px;
         }
@@ -19,13 +31,13 @@
         }
 
         .header h1 {
-            color: #2c3e50;
+            color: #00008b; /* Azul oscuro */
             font-size: 2.5em;
             margin: 0;
         }
 
         .header p {
-            color: #7f8c8d;
+            color: #4169e1; /* Azul real */
             font-style: italic;
         }
 
@@ -36,24 +48,24 @@
         }
 
         .semester {
-            background-color: #ffffff;
+            background-color: #ffffff; /* Blanco puro para el contenedor */
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             padding: 25px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .semester:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
         }
 
         .semester h2 {
-            color: #34495e;
+            color: #191970; /* Azul medianoche */
             margin-top: 0;
             margin-bottom: 20px;
             text-align: center;
-            border-bottom: 2px solid #ecf0f1;
+            border-bottom: 2px solid #e6f0ff; /* Azul muy claro */
             padding-bottom: 10px;
         }
 
@@ -61,7 +73,6 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background-color: #e9f2f9;
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 12px;
@@ -69,25 +80,34 @@
             transition: background-color 0.2s ease, transform 0.2s ease;
             position: relative;
         }
-
-        .course:hover {
-            background-color: #dbe9f5;
+        
+        /* Estado por defecto para materias activas (no bloqueadas ni completadas) */
+        .course:not(.locked):not(.completed) {
+            background-color: #b0c4de; /* Azul grisáceo claro */
+            color: #191970; /* Texto azul oscuro */
+        }
+        
+        .course:not(.locked):hover {
+            background-color: #add8e6; /* Azul claro al pasar el cursor */
         }
 
+        /* Materias completadas */
         .course.completed {
-            background-color: #d4edda;
+            background-color: #87cefa; /* Azul claro para completadas */
+            color: #00008b;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
         }
 
         .course.completed .course-name {
             text-decoration: line-through;
-            color: #555;
+            color: #4682b4; /* Texto azul acero para completadas */
         }
-        
+
+        /* Materias bloqueadas */
         .course.locked {
             cursor: not-allowed;
-            background-color: #f1f1f1;
-            color: #aaa;
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+            background-color: #e6f0ff; /* Azul muy claro para bloqueadas */
+            color: #6495ed; /* Azul medio para texto más tenue */
         }
 
         .course-details {
@@ -98,18 +118,23 @@
         .course-name {
             font-weight: bold;
             font-size: 1em;
-            color: #333;
+            color: inherit; /* Hereda el color del contenedor */
         }
 
         .course-uc {
             font-size: 0.85em;
-            color: #7f8c8d;
+            color: inherit; /* Hereda el color del contenedor */
             margin-top: 4px;
+        }
+
+        .uc-count {
+            font-weight: bold;
+            color: #00008b; /* Azul oscuro para el contador */
         }
 
         .tooltip {
             visibility: hidden;
-            background-color: #555;
+            background-color: #2f4f4f; /* Gris oscuro para el tooltip */
             color: #fff;
             text-align: center;
             padding: 8px;
@@ -123,7 +148,6 @@
             transition: opacity 0.3s;
             width: max-content;
             max-width: 250px;
-            white-space: pre-line;
         }
 
         .course.locked:hover .tooltip {
@@ -139,12 +163,12 @@
             margin-left: -5px;
             border-width: 5px;
             border-style: solid;
-            border-color: #555 transparent transparent transparent;
+            border-color: #2f4f4f transparent transparent transparent;
         }
 
         .progress-bar {
             width: 100%;
-            background-color: #e0e0e0;
+            background-color: #add8e6; /* Fondo de barra en azul claro */
             border-radius: 5px;
             height: 20px;
             margin-top: 20px;
@@ -153,20 +177,21 @@
 
         .progress {
             height: 100%;
-            background-color: #2ecc71;
+            background-color: #4682b4; /* Color de progreso en azul acero */
             width: 0%;
             transition: width 0.5s ease-in-out;
             text-align: center;
             line-height: 20px;
-            color: white;
+            color: #191970; /* Texto azul oscuro en la barra de progreso */
             font-weight: bold;
         }
+        
         .uc-tracker {
             text-align: center;
             margin: 10px 0;
             font-size: 1.1em;
             font-weight: bold;
-            color: #2c3e50;
+            color: #00008b; /* Contador de UC en azul oscuro */
         }
     </style>
 </head>
@@ -174,11 +199,11 @@
 
     <div class="header">
         <h1>Malla Curricular Interactiva</h1>
-        <p>Ingeniería de Sistemas</p>
+        <p>Ingeniería Informática</p>
     </div>
 
     <div class="uc-tracker">
-        Unidades de Crédito Acumuladas: <span id="uc-counter">0</span> / 231
+        Unidades de Crédito Acumuladas: <span id="uc-counter">0</span> / 241
     </div>
 
     <div class="progress-bar">
@@ -295,7 +320,7 @@
         ];
 
         let completedCourses = {};
-        const totalUC = 231;
+        const totalUC = 241;
 
         const curriculumGrid = document.getElementById('curriculum-grid');
         const ucCounter = document.getElementById('uc-counter');
@@ -303,7 +328,7 @@
 
         function loadProgress() {
             try {
-                const storedProgress = localStorage.getItem('curriculumProgressV2');
+                const storedProgress = localStorage.getItem('curriculumProgress241'); // Cambiado para evitar choques con el almacenamiento viejo
                 if (storedProgress) {
                     completedCourses = JSON.parse(storedProgress);
                 }
@@ -314,7 +339,7 @@
 
         function saveProgress() {
             try {
-                localStorage.setItem('curriculumProgressV2', JSON.stringify(completedCourses));
+                localStorage.setItem('curriculumProgress241', JSON.stringify(completedCourses));
             } catch (e) {
                 console.error("No se pudo guardar el progreso en localStorage", e);
             }
@@ -359,6 +384,7 @@
             let isLocked = false;
             let reasons = [];
 
+            // Check prerequisites
             if (course.req) {
                 for (const req of course.req) {
                     if (!completedCourses[req]) {
@@ -368,15 +394,16 @@
                 }
             }
 
+            // Check corequisites
             if (course.coReq) {
                 for (const coReq of course.coReq) {
                     if (!completedCourses[coReq]) {
-                        isLocked = true; // Los co-requisitos también bloquean si no están aprobados o cursandose simultáneamente
-                        reasons.push(`- Co-requisito necesario: ${coReq}`);
+                        reasons.push(`- Requisito simultáneo (CoReq): ${coReq}`);
                     }
                 }
             }
 
+            // Check UC prerequisites
             if (course.reqUC) {
                 if (ucCompleted < course.reqUC) {
                     isLocked = true;
@@ -422,7 +449,7 @@
                     if (status.isLocked) {
                         const tooltip = document.createElement('span');
                         tooltip.className = 'tooltip';
-                        tooltip.textContent = `Bloqueado:\n${status.reasons.join('\n')}`;
+                        tooltip.textContent = `Bloqueado. Requisitos:\n${status.reasons.join('\n')}`;
                         courseDiv.appendChild(tooltip);
                     }
 
@@ -447,11 +474,15 @@
                         completedCourses[courseName] = !completedCourses[courseName];
                         saveProgress();
                         renderCurriculum();
+                    } else {
+                        // Opcional: Feedback visual o sonoro para el usuario
+                        console.log(`Materia ${courseName} bloqueada. Requisitos no cumplidos.`);
                     }
                 });
             });
         }
 
+        // Initialize on page load
         loadProgress();
         renderCurriculum();
     </script>
